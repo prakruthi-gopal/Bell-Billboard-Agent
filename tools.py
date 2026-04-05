@@ -141,7 +141,7 @@ def place_asset_on_canvas(
 
     if resize_mode == "stretch":
         asset = asset.resize((width, height), Image.LANCZOS)
-        asset = asset.filter(ImageFilter.GaussianBlur(radius=6))
+        asset = asset.filter(ImageFilter.GaussianBlur(radius=3))
     else:
         # Crop to match aspect ratio, then resize
         target_ratio = width / height
@@ -160,7 +160,7 @@ def place_asset_on_canvas(
 
         # Feather the edges so lifestyle blends into the background
         # Creates a gradient alpha mask — fully opaque in center, fading to transparent at edges
-        feather = 30  # pixels of fade
+        feather = 20  # pixels of fade
         mask = Image.new("L", (width, height), 255)
         draw_mask = ImageDraw.Draw(mask)
 

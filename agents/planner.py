@@ -25,11 +25,11 @@ The headline goes next to or below the lifestyle image, over the visible backgro
 Return ONLY valid JSON:
 {{
     "headline": "What the viewer GETS — max 6 words (e.g., '4 Lines. Free Upgrade.')",
-    "headline_x": {int(BILLBOARD_WIDTH * 0.05)},
+    "headline_x": {int(BILLBOARD_WIDTH * 0.58)},
     "headline_y": {int(BILLBOARD_HEIGHT * 0.3)},
     "headline_font_size": 44,
     "subtext": "Optional details (e.g., 'Perfect for Back-to-School.') or empty string",
-    "subtext_x": {int(BILLBOARD_WIDTH * 0.05)},
+    "subtext_x": {int(BILLBOARD_WIDTH * 0.58)},
     "subtext_y": {int(BILLBOARD_HEIGHT * 0.7)},
     "subtext_font_size": 20,
     "image_assets": [
@@ -57,7 +57,6 @@ You may adjust:
 If the brief already includes a specific headline or tagline, USE IT as-is instead of making up a new one.
 Otherwise, the headline must say what Bell is OFFERING, not just the theme.
 The lifestyle image must NOT touch any edge of the billboard.
-Use the color theme given in the brief.
 """
 
 
