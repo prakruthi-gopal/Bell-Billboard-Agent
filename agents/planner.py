@@ -28,7 +28,7 @@ Return ONLY valid JSON:
     "headline_x": {int(BILLBOARD_WIDTH * 0.58)},
     "headline_y": {int(BILLBOARD_HEIGHT * 0.3)},
     "headline_font_size": 44,
-    "subtext": "Optional details (e.g., 'Perfect for Back-to-School.') or empty string",
+    "subtext": "Optional short detail, max 5 words (e.g., 'Perfect for Back-to-School.' or 'Visit bell.ca today.') or empty string",
     "subtext_x": {int(BILLBOARD_WIDTH * 0.58)},
     "subtext_y": {int(BILLBOARD_HEIGHT * 0.7)},
     "subtext_font_size": 20,

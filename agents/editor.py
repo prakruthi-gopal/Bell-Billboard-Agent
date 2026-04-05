@@ -69,8 +69,16 @@ Review the image and return ONLY valid JSON:
 }}
 
 PASS the billboard if it looks reasonably professional and readable.
-Only FAIL for critical issues: missing/unreadable text, completely broken layout, or offensive content.
-Minor imperfections are acceptable for a billboard.
+Only FAIL for these critical issues:
+- Headline text is completely missing or unreadable
+- Billboard is blank or has a completely broken layout
+- Offensive or inappropriate content
+
+DO NOT fail for:
+- Text being close to edges (as long as it's readable)
+- Subtext being partially near the bottom edge
+- Minor spacing or alignment imperfections
+- The lifestyle image not being perfectly centered
 """
 
 
