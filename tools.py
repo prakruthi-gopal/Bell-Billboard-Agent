@@ -141,7 +141,7 @@ def place_asset_on_canvas(
 
     if resize_mode == "stretch":
         asset = asset.resize((width, height), Image.LANCZOS)
-        asset = asset.filter(ImageFilter.GaussianBlur(radius=4))
+        asset = asset.filter(ImageFilter.GaussianBlur(radius=6))
     else:
         # Crop to match aspect ratio, then resize
         target_ratio = width / height
@@ -160,7 +160,7 @@ def place_asset_on_canvas(
 
         # Feather the edges so lifestyle blends into the background
         # Creates a gradient alpha mask — fully opaque in center, fading to transparent at edges
-        feather = 20  # pixels of fade
+        feather = 30  # pixels of fade
         mask = Image.new("L", (width, height), 255)
         draw_mask = ImageDraw.Draw(mask)
 
@@ -202,12 +202,18 @@ def add_text_overlay(
 
     max_height = img_h - y - 20
     min_font_size = 28
+    lines = [headline]  # Default: single unwrapped line
+    line_height = int(font_size * 1.25)
+    font = ImageFont.load_default()
 
     while font_size >= min_font_size:
         try:
             font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size)
         except (IOError, OSError):
             font = ImageFont.load_default()
+            max_width = img_w - x - 20
+            lines = _wrap_text(draw, headline, font, max_width)
+            line_height = int(font_size * 1.25)
             break
 
         max_width = img_w - x - 20
