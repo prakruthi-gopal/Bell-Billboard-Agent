@@ -34,7 +34,6 @@ from agents.generator import generator_agent
 from agents.editor import editor_agent
 from config import BILLBOARD_WIDTH, BILLBOARD_HEIGHT
 
-
 # ---------------------------------------------------------------------------
 # Page config
 # ---------------------------------------------------------------------------
@@ -74,11 +73,12 @@ with st.sidebar:
 # ---------------------------------------------------------------------------
 # Brief input — wrapped in a form so button activates on submit
 # ---------------------------------------------------------------------------
-with st.form("brief_form"):
+with st.form("brief_form", clear_on_submit=False):
     brief = st.text_area(
         "Enter your creative brief",
         placeholder="e.g., Bell holiday promotion billboard — family audience, winter theme, showcase the new Bell smartphone",
         height=100,
+        key="brief_input",
     )
     run_button = st.form_submit_button("Generate Billboard", type="primary")
 

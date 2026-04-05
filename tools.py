@@ -160,7 +160,7 @@ def place_asset_on_canvas(
 
         # Feather the edges so lifestyle blends into the background
         # Creates a gradient alpha mask — fully opaque in center, fading to transparent at edges
-        feather = 20  # pixels of fade
+        feather = 25  # pixels of fade
         mask = Image.new("L", (width, height), 255)
         draw_mask = ImageDraw.Draw(mask)
 
