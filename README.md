@@ -21,7 +21,7 @@ The pipeline is orchestrated in pure Python with a shared `BillboardState` dict 
 
 **Planner Agent** — Takes the creative brief and produces a structured spec: what image assets to generate (background, product, lifestyle), where each goes on the canvas (layout coordinates), headline text, brand overlay placement.
 
-**Generator Agent** — Makes one Imagen API call per asset. A billboard with 2 visual elements = 2 Imagen calls max. Each asset is saved separately with its role tagged.
+**Generator Agent** — Makes one Imagen API call per asset (2 assets = 2 calls). Each asset is saved separately with its role tagged. Includes automatic fallback between Imagen models if quota limits are hit.
 
 **Editor Agent (the hero)** — Implements a ReAct loop (Reason → Act → Observe):
 - **Reason**: LLM analyzes the assets, the planner's layout, and any compliance violations from previous iterations. Decides what tools to call with what parameters.
@@ -47,7 +47,7 @@ These validations are **hardcoded in Python**, not LLM prompt suggestions. The L
 | Component | Technology |
 |-----------|-----------|
 | LLM reasoning | Gemini 2.5 Flash |
-| Image generation | Google Imagen |
+| Image generation | Google Imagen (same API key) |
 | Orchestration | Pure Python (shared state dict) |
 | Image composition | Pillow |
 | UI | Streamlit |
@@ -73,6 +73,34 @@ Run:
 ```
 streamlit run app.py
 ```
+
+## Trade-offs: agency vs consistency
+
+Building this over the weekend revealed a core tension — giving the LLM full creative freedom produced inconsistent layouts (50/50 splits, overlapping text, assets off-canvas), but hardcoding everything removed the point of having an agent. Here's where I landed:
+
+**What the LLM decides (creative agency):**
+- Headline and subtext content (what to say, how to sell)
+- Image generation prompts (what scene, what people, what mood)
+- Lifestyle image positioning within bounded ranges
+- Crop focus direction (which part of the image to preserve)
+- Headline and subtext placement
+- Whether to include subtext at all
+- Canvas background color
+
+**What's hardcoded (infrastructure/brand constraints):**
+- Background always covers the full canvas, blurred to not compete with the hero
+- Logo always top-right, fixed size (brand constant, not a creative decision)
+- Max 2 image assets (tested 1, 2, and 3 — 2 consistently produced the best results on a 300px-tall canvas)
+- Fresh canvas every iteration (prevents ghosting from previous layers)
+- Text auto-wrapping and font-size reduction (rendering safety, not creative choice)
+- Subtext always positioned below headline (prevents overlap)
+- Feathered edges on lifestyle image (visual polish)
+- Overlap prevention, boundary clamping, crop validation (safety nets)
+
+**Why this balance:**
+The hardcoded constraints are things a human designer wouldn't freestyle either — logo placement, canvas dimensions, text rendering rules. These are brand and physics constraints. The LLM handles what actually matters for a billboard: what to show, what to say, and how to frame it.
+
+The main limitation is spatial reasoning. LLMs reason about layout from text descriptions without seeing the images, which leads to inconsistent compositions. In production, feeding the actual generated images into a multimodal model for layout decisions — rather than planning layout blind — would significantly improve consistency.
 
 ## Production considerations (not built, but thought about)
 
