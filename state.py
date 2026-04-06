@@ -1,13 +1,12 @@
 """
 Shared state schema for the Billboard Ad Agent system.
-Passed through the LangGraph graph — every agent reads from it and writes back.
+Passed through the pipeline — every agent reads from it and writes back.
 
 Key change: we now track MULTIPLE image assets that the editor
 composes together, not just a single base image.
 """
 
 from typing import TypedDict, Optional
-
 
 class ImageAsset(TypedDict):
     """A single generated image asset with its metadata."""

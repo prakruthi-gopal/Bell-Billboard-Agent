@@ -61,7 +61,7 @@ with st.sidebar:
         "**Tech stack**\n"
         "- Gemini 2.5 Flash (reasoning)\n"
         "- Google Imagen (image generation)\n"
-        "- LangGraph (orchestration)\n"
+        "- Pure Python (orchestration)\n"
         "- Pillow (image composition)\n"
     )
     st.markdown("---")
@@ -154,15 +154,6 @@ if run_button and brief:
             for a in assets_planned:
                 st.markdown(f"- *{a['role']}*: {a.get('description', '')}")
 
-#            # Show layout coordinates for debugging
-#            layout = state["spec"].get("layout", [])
-#            st.markdown("**Layout coordinates:**")
-#            for l in layout:
-#                st.markdown(f"- `{l['asset_role']}`: x={l.get('x')}, y={l.get('y')}, w={l.get('width')}, h={l.get('height')}")
-
-#            with st.expander("Full spec JSON", expanded=True):
-#                st.json(state["spec"])
-
         except Exception as e:
             status.update(label="❌ Planner Agent failed", state="error")
             st.error(f"Planner error: {e}")
@@ -198,9 +189,10 @@ if run_button and brief:
                     editor_result = editor_agent(state)
                     state.update(editor_result)
  
-                    if state["compliance_status"] == "pass":
+                    if state["compliance_status"] == "pass" or state["iteration_count"] >= max_iterations:
+                        label = "compliance passed" if state["compliance_status"] == "pass" else "max iterations reached"
                         status.update(
-                            label=f"✅ Editor — compliance passed (iteration {iteration})",
+                            label=f"✅ Editor — {label} (iteration {iteration})",
                             state="complete",
                         )
                         break
@@ -216,7 +208,6 @@ if run_button and brief:
                     break
  
     # ---- Final result ----
-    # Save to session state so it persists across reruns (e.g., download button click)
     st.session_state["final_state"] = dict(state)
  
 # Show final result from session state (persists across reruns)
