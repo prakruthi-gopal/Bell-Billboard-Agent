@@ -21,7 +21,7 @@ The pipeline is orchestrated in pure Python with a shared `BillboardState` dict 
 
 **Planner Agent** — Takes the creative brief and produces a structured spec: what image assets to generate (background, product, lifestyle), where each goes on the canvas (layout coordinates), headline text, brand overlay placement.
 
-**Generator Agent** — Makes one Imagen API call per asset. A billboard with 3 visual elements = 3 Imagen calls. Each asset is saved separately with its role tagged.
+**Generator Agent** — Makes one Imagen API call per asset. A billboard with 2 visual elements = 2 Imagen calls max. Each asset is saved separately with its role tagged.
 
 **Editor Agent (the hero)** — Implements a ReAct loop (Reason → Act → Observe):
 - **Reason**: LLM analyzes the assets, the planner's layout, and any compliance violations from previous iterations. Decides what tools to call with what parameters.
