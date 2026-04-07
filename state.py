@@ -39,3 +39,5 @@ class BillboardState(TypedDict):
     # --- Config ---
     max_iterations: int  # Safety cap (default: 3)
     output_dir: str      # Where temp images get saved
+
+    
